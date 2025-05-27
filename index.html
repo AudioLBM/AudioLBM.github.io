@@ -37,10 +37,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            We present a new framework for universal speech super-resolution based on latent Schrödinger bridge models.
-            Our approach uses a cascaded structure to progressively reconstruct 192kHz audio from arbitrary low-resolution inputs.
-            By modeling transitions in latent space rather than waveform space, our method reduces synthesis complexity and achieves high fidelity across diverse frequency bands.
-            We evaluate the approach in both single-step and multi-step upsampling pipelines, demonstrating strong generalization and realistic reconstruction on high-frequency content.
+            Audio super-resolution (SR), i.e., upsampling the low-resolution (LR) waveform to the high-resolution (HR) version, has recently been explored with diffusion and bridge models, while previous methods often suffer from sub-optimal upsampling quality due to their uninformative generation prior. Towards high-quality audio super-resolution, we present a new system with latent bridge models (LBMs), where we compress the audio waveform into a continuous latent space and design an LBM to enable a latent-to-latent generation process that naturally matches the LR-to-HR upsampling process, thereby fully exploiting the instructive prior information contained in the LR waveform. To further enhance the training results despite the limited availability of HR samples, we introduce frequency-aware LBMs, where the prior and target frequency are taken as model input, enabling LBMs to explicitly learn an any-to-any upsampling process at the training stage. Furthermore, we design cascaded LBMs and present two prior augmentation strategies, where we make the first attempt to unlock the audio upsampling beyond 48 kHz and empower a seamless cascaded SR process, providing higher flexibility for audio post-production. Comprehensive experimental results evaluated on the VCTK, ESC-50, Song-Describer benchmark datasets and two internal testsets demonstrate that we achieve state-of-the-art objective and perceptual quality for any-to-48 kHz SR across speech, audio, and music signals, as well as setting the first record for any-to-192kHz audio SR. 
           </p>
         </div>
       </div>
@@ -54,9 +51,9 @@
       <div class="column is-full-width has-text-centered">
         <h2 class="title is-3">Model Architecture</h2>
         <figure class="image is-3by2">
-          <img src="./static/images/model_architecture_placeholder.png" alt="Model architecture diagram">
+          <img src="./ppt_for_nips20252_00.png" alt="Overview of AudioLBM">
         </figure>
-        <p class="is-size-6">Insert your model architecture figure here (e.g., PNG, JPG).</p>
+        <!-- <p class="is-size-6">Insert your model architecture figure here (e.g., PNG, JPG).</p> -->
       </div>
     </div>
   </div>
@@ -64,7 +61,7 @@
 
 <footer class="footer">
   <div class="content has-text-centered">
-    <p>This demo page is for anonymous submission. Please remove or replace this footer as needed.</p>
+    <p>Demo page for AudioLBM.</p>
   </div>
 </footer>
 
