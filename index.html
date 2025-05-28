@@ -45,7 +45,7 @@
   </div>
 </section>
 
-<section class="section">
+<!-- <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width has-text-centered">
@@ -56,11 +56,37 @@
       </div>
     </div>
   </div>
+</section> -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="notification is-info has-text-centered is-light">
+      🎧 <strong>For best experience:</strong> Please use high-quality headphones to enjoy the full fidelity of the audio demos.
+    </div>
+  </div>
 </section>
+
+<!-- <section class="section" style="padding-top: 1rem; padding-bottom: 1rem;">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-4">Demo Navigation</h2>
+    <div class="buttons is-centered">
+      <a class="button is-light" href="#esc8k">ESC-50 8kHz</a>
+      <a class="button is-light" href="#esc16k">ESC-50 16kHz</a>
+      <a class="button is-light" href="#song8k">SongDescriber 8kHz</a>
+      <a class="button is-light" href="#song16k">SongDescriber 16kHz</a>
+      <a class="button is-light" href="#vctk">VCTK</a>
+      <a class="button is-light" href="#audioldm2">AudioLDM2</a>
+      <a class="button is-light" href="#qamdt">QA-MDT</a>
+      <a class="button is-light" href="#maskgct">MaskGCT</a>
+      <a class="button is-light" href="#a2sb">A2SB</a>
+    </div>
+  </div>
+</section> -->
+
+
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ESC-50 8kHz input</h2>
+    <h2 class="title is-3 has-text-centered">ESC-50, 8kHz input</h2>
     <div class="columns is-multiline">
       <div class="column is-full">
         <p><b>Low</b></p>
@@ -91,7 +117,7 @@
 </section>
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">ESC-50 16kHz input</h2>
+    <h2 class="title is-3 has-text-centered">ESC-50, 16kHz input</h2>
     <div class="columns is-multiline">
       <div class="column is-full">
         <p><b>Low</b></p>
@@ -102,11 +128,11 @@
         <audio controls src="demos/demo_audio_additional_16k/audiosr/1-17742-A-12.wav" style="width: 100%;"></audio>
       </div>
       <div class="column is-full">
-        <p><b>Low</b></p>
+        <p><b>Low (Note that the volume of this audio might be too high for some people)</b></p>
         <audio controls src="demos/demo_audio_additional_16k/low/1-72195-A-37_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
+        <p><b>Ours (Note that the volume of this audio might be too high for some people)</b></p>
         <audio controls src="demos/demo_audio_additional_16k/ours/1-72195-A-37.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
+        <p><b>AudioSR (Note that the volume of this audio might be too high for some people)</b></p>
         <audio controls src="demos/demo_audio_additional_16k/audiosr/1-72195-A-37.wav" style="width: 100%;"></audio>
       </div>
       <div class="column is-full">
@@ -122,7 +148,7 @@
 </section>
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Song-Describer-Dataset 8kHz input</h2>
+    <h2 class="title is-3 has-text-centered">Song-Describer-Dataset, 8kHz input</h2>
     <div class="columns is-multiline">
       <div class="column is-full">
         <p><b>Low</b></p>
@@ -153,7 +179,7 @@
 </section>
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Song-Describer-Dataset 16kHz input</h2>
+    <h2 class="title is-3 has-text-centered">Song-Describer-Dataset, 16kHz input</h2>
     <div class="columns is-multiline">
       <div class="column is-full">
         <p><b>Low</b></p>
@@ -182,6 +208,56 @@
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">VCTK, 8kHz input</h2>
+
+    <!-- Audio 1 -->
+    <div class="box">
+      <h3 class="subtitle is-5">Audio 1</h3>
+      <p><b>Ground Truth</b></p>
+      <audio controls src="./demos/vctk/1_gt.wav" style="width: 100%;"></audio>
+      <p><b>Input</b></p>
+      <audio controls src="./demos/vctk/1_input.wav" style="width: 100%;"></audio>
+      <p><b>Nu-Wave2</b></p>
+      <audio controls src="./demos/vctk/1_nuwave2.wav" style="width: 100%;"></audio>
+      <p><b>NVSR</b></p>
+      <audio controls src="./demos/vctk/1_nvsr.wav" style="width: 100%;"></audio>
+      <p><b>Frepainter</b></p>
+      <audio controls src="./demos/vctk/1_frepainter.wav" style="width: 100%;"></audio>
+      <p><b>Flowhigh</b></p>
+      <audio controls src="./demos/vctk/1_flowhigh.wav" style="width: 100%;"></audio>
+      <p><b>AudioSR</b></p>
+      <audio controls src="./demos/vctk/1_audiosr.wav" style="width: 100%;"></audio>
+      <p><b>Ours</b></p>
+      <audio controls src="./demos/vctk/1_ours.wav" style="width: 100%;"></audio>
+    </div>
+
+    <!-- Audio 2 -->
+    <div class="box">
+      <h3 class="subtitle is-5">Audio 2</h3>
+      <p><b>Ground Truth</b></p>
+      <audio controls src="./demos/vctk/2_gt.wav" style="width: 100%;"></audio>
+      <p><b>Input</b></p>
+      <audio controls src="./demos/vctk/2_input.wav" style="width: 100%;"></audio>
+      <p><b>Nu-Wave2</b></p>
+      <audio controls src="./demos/vctk/2_nuwave2.wav" style="width: 100%;"></audio>
+      <p><b>NVSR</b></p>
+      <audio controls src="./demos/vctk/2_nvsr.wav" style="width: 100%;"></audio>
+      <p><b>Frepainter</b></p>
+      <audio controls src="./demos/vctk/2_frepainter.wav" style="width: 100%;"></audio>
+      <p><b>Flowhigh</b></p>
+      <audio controls src="./demos/vctk/2_flowhigh.wav" style="width: 100%;"></audio>
+      <p><b>AudioSR</b></p>
+      <audio controls src="./demos/vctk/2_audiosr.wav" style="width: 100%;"></audio>
+      <p><b>Ours</b></p>
+      <audio controls src="./demos/vctk/2_ours.wav" style="width: 100%;"></audio>
+    </div>
+  </div>
+</section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">AudioLDM2 on AudioCaps, 16kHz input</h2>
@@ -275,6 +351,47 @@
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Comparison with A2SB's Demo Page, 8kHz input</h2>
+
+    <!-- ========== AUDIO 1 ========== -->
+    <div class="box">
+      <h3 class="subtitle is-5">Audio 1</h3>
+      <p><b>Input</b></p>
+      <audio controls src="./demos/a2sb/1_input.wav" style="width: 100%;"></audio>
+      <p><b>AudioSR</b></p>
+      <audio controls src="./demos/a2sb/1_audiosr.wav" style="width: 100%;"></audio>
+      <p><b>A2SB</b></p>
+      <audio controls src="./demos/a2sb/1_a2sb.wav" style="width: 100%;"></audio>
+      <p><b>AUDIT</b></p>
+      <audio controls src="./demos/a2sb/1_audit.wav" style="width: 100%;"></audio>
+      <p><b>CQTDiff</b></p>
+      <audio controls src="./demos/a2sb/1_cqtdiff.wav" style="width: 100%;"></audio>
+      <p><b>Ours</b></p>
+      <audio controls src="./demos/a2sb/1_ours.wav" style="width: 100%;"></audio>
+    </div>
+
+    <!-- ========== AUDIO 2 ========== -->
+    <div class="box">
+      <h3 class="subtitle is-5">Audio 2</h3>
+      <p><b>Input</b></p>
+      <audio controls src="./demos/a2sb/2_input.wav" style="width: 100%;"></audio>
+      <p><b>AudioSR</b></p>
+      <audio controls src="./demos/a2sb/2_audiosr.wav" style="width: 100%;"></audio>
+      <p><b>A2SB</b></p>
+      <audio controls src="./demos/a2sb/2_a2sb.wav" style="width: 100%;"></audio>
+      <p><b>AUDIT</b></p>
+      <audio controls src="./demos/a2sb/2_audit.wav" style="width: 100%;"></audio>
+      <p><b>CQTDiff</b></p>
+      <audio controls src="./demos/a2sb/2_cqtdiff.wav" style="width: 100%;"></audio>
+      <p><b>Ours</b></p>
+      <audio controls src="./demos/a2sb/2_ours.wav" style="width: 100%;"></audio>
+    </div>
+  </div>
+</section>
+
 
 <footer class="footer">
   <div class="content has-text-centered">
