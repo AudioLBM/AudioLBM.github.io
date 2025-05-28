@@ -10,8 +10,65 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
-</head>
 
+  <script>
+    function toggleSpectrogram(id) {
+      const img = document.getElementById(id);
+      if (img.style.display === 'none') {
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none';
+      }
+    }
+  </script>
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode h1,
+    body.dark-mode h2,
+    body.dark-mode h3 {
+      color: #ffffff;
+    }
+
+    body.dark-mode .box.audio-box {
+      background-color: rgba(217, 179, 255, 0.200);  /* 柔和的浅紫色 */
+    }
+
+    body.dark-mode .notification {
+      background-color: #1a1a1a;
+      color: #b388ff; /* 紫色 */
+      border-left: 4px solid #b388ff;
+    }
+
+    body.dark-mode audio {
+      background-color: #2a2a2a;
+      border-radius: 4px;
+    }
+
+    body.dark-mode .button.is-link {
+      background-color: #571767a5;
+      color: #ffffff;
+    }
+    body.dark-mode .notification.is-info.is-light {
+      background-color: #1e1e2f !important;
+      color: #b388ff !important;
+      border-left: 4px solid #b388ff;
+    }
+    
+    body.dark-mode p b {
+      color: white !important;
+    }
+    body.dark-mode hr {
+      display: none;
+    }
+
+  </style>
+
+  
+</head>
 <body>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -34,7 +91,7 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-centered">Abstract</h2> <!-- 加 has-text-centered -->
+        <h2 class="title is-3 has-text-centered">Abstract</h2>
         <div class="content has-text-justified">
           <p>
             Audio super-resolution (SR), i.e., upsampling the low-resolution (LR) waveform to the high-resolution (HR) version, has recently been explored with diffusion and bridge models, while previous methods often suffer from sub-optimal upsampling quality due to their uninformative generation prior. Towards high-quality audio super-resolution, we present a new system with latent bridge models (LBMs), where we compress the audio waveform into a continuous latent space and design an LBM to enable a latent-to-latent generation process that naturally matches the LR-to-HR upsampling process, thereby fully exploiting the instructive prior information contained in the LR waveform. To further enhance the training results despite the limited availability of HR samples, we introduce frequency-aware LBMs, where the prior and target frequency are taken as model input, enabling LBMs to explicitly learn an any-to-any upsampling process at the training stage. Furthermore, we design cascaded LBMs and present two prior augmentation strategies, where we make the first attempt to unlock the audio upsampling beyond 48 kHz and empower a seamless cascaded SR process, providing higher flexibility for audio post-production. Comprehensive experimental results evaluated on the VCTK, ESC-50, Song-Describer benchmark datasets and two internal testsets demonstrate that we achieve state-of-the-art objective and perceptual quality for any-to-48 kHz SR across speech, audio, and music signals, as well as setting the first record for any-to-192kHz audio SR. 
@@ -43,362 +100,847 @@
       </div>
     </div>
   </div>
+  <div style="display: flex; justify-content: center; margin: 2rem 0; padding-bottom: 0rem;">
+    <button class="button is-rounded" 
+            style="background-color: #b2b2b2; font-size: 0.9rem; color: #000000; border: none;" 
+            onclick="toggleDarkMode()">
+      Dark Mode
+    </button>
+  </div>
+  
 </section>
 
-<!-- <section class="section">
+<section class="section" style="padding-top: 0rem; padding-bottom: 1rem;">
   <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width has-text-centered">
-        <h2 class="title is-3">Overview of AudioLBM</h2>
-        <figure class="image">
-          <img src="./ppt_for_nips20252_00.png" style="max-width: 100%; height: auto;">
-        </figure>
-      </div>
-    </div>
-  </div>
-</section> -->
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="notification is-info has-text-centered is-light">
+    <div class="notification is-info has-text-centered is-light" style="margin-top: 0; margin-bottom: 0.5rem;">
       🎧 <strong>For best experience:</strong> Please use high-quality headphones to enjoy the full fidelity of the audio demos.
     </div>
   </div>
 </section>
-
-<!-- <section class="section" style="padding-top: 1rem; padding-bottom: 1rem;">
-  <div class="container is-max-desktop has-text-centered">
-    <h2 class="title is-4">Demo Navigation</h2>
-    <div class="buttons is-centered">
-      <a class="button is-light" href="#esc8k">ESC-50 8kHz</a>
-      <a class="button is-light" href="#esc16k">ESC-50 16kHz</a>
-      <a class="button is-light" href="#song8k">SongDescriber 8kHz</a>
-      <a class="button is-light" href="#song16k">SongDescriber 16kHz</a>
-      <a class="button is-light" href="#vctk">VCTK</a>
-      <a class="button is-light" href="#audioldm2">AudioLDM2</a>
-      <a class="button is-light" href="#qamdt">QA-MDT</a>
-      <a class="button is-light" href="#maskgct">MaskGCT</a>
-      <a class="button is-light" href="#a2sb">A2SB</a>
-    </div>
-  </div>
-</section> -->
 
 
 
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">ESC-50, 8kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/low/1-85168-A-39_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/ours/1-85168-A-39.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/audiosr/1-85168-A-39.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/low/1-85168-A-39_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_85168_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/low/1-79220-A-17_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/ours/1-79220-A-17.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/audiosr/1-79220-A-17.wav" style="width: 100%;"></audio>
+      <img id="spec_85168_low" src="demos/demo_audio_additional_8k/low/1-85168-A-39_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/ours/1-85168-A-39.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_85168_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/low/3-166546-B-34_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/ours/3-166546-B-34.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_audio_additional_8k/audiosr/3-166546-B-34.wav" style="width: 100%;"></audio>
+      <img id="spec_85168_ours" src="demos/demo_audio_additional_8k/ours/1-85168-A-39.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/audiosr/1-85168-A-39.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_85168_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_85168_audiosr" src="demos/demo_audio_additional_8k/audiosr/1-85168-A-39_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/low/1-79220-A-17_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_79220_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_79220_low" src="demos/demo_audio_additional_8k/low/1-79220-A-17_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/ours/1-79220-A-17.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_79220_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_79220_ours" src="demos/demo_audio_additional_8k/ours/1-79220-A-17.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/audiosr/1-79220-A-17.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_79220_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_79220_audiosr" src="demos/demo_audio_additional_8k/audiosr/1-79220-A-17_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/low/3-166546-B-34_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_166546_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_166546_low" src="demos/demo_audio_additional_8k/low/3-166546-B-34_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/ours/3-166546-B-34.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_166546_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_166546_ours" src="demos/demo_audio_additional_8k/ours/3-166546-B-34.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_8k/audiosr/3-166546-B-34.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_166546_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_166546_audiosr" src="demos/demo_audio_additional_8k/audiosr/3-166546-B-34_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">ESC-50, 16kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/low/1-17742-A-12_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/ours/1-17742-A-12.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-17742-A-12.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/low/1-17742-A-12_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_17742_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low (Note that the volume of this audio might be too high for some people)</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/low/1-72195-A-37_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours (Note that the volume of this audio might be too high for some people)</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/ours/1-72195-A-37.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR (Note that the volume of this audio might be too high for some people)</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-72195-A-37.wav" style="width: 100%;"></audio>
+      <img id="spec_17742_low" src="demos/demo_audio_additional_16k/low/1-17742-A-12_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/ours/1-17742-A-12.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_17742_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/low/1-90797-A-15_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/ours/1-90797-A-15.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-90797-A-15.wav" style="width: 100%;"></audio>
+      <img id="spec_17742_ours" src="demos/demo_audio_additional_16k/ours/1-17742-A-12.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-17742-A-12.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_17742_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_17742_audiosr" src="demos/demo_audio_additional_16k/audiosr/1-17742-A-12_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box">
+      <p><b>Low (Volume may be high)</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/low/1-72195-A-37_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_72195_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_72195_low" src="demos/demo_audio_additional_16k/low/1-72195-A-37_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours (Volume may be high)</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/ours/1-72195-A-37.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_72195_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_72195_ours" src="demos/demo_audio_additional_16k/ours/1-72195-A-37.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR (Volume may be high)</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-72195-A-37.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_72195_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_72195_audiosr" src="demos/demo_audio_additional_16k/audiosr/1-72195-A-37_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/low/1-90797-A-15_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_90797_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_90797_low" src="demos/demo_audio_additional_16k/low/1-90797-A-15_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/ours/1-90797-A-15.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_90797_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_90797_ours" src="demos/demo_audio_additional_16k/ours/1-90797-A-15.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_audio_additional_16k/audiosr/1-90797-A-15.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_90797_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_90797_audiosr" src="demos/demo_audio_additional_16k/audiosr/1-90797-A-15_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Song-Describer-Dataset, 8kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/low/35349.2min_seg000_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/ours/35349.2min_seg000.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg000.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box" background- border-radius: 12px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/low/35349.2min_seg000_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_000_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/low/35349.2min_seg011_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/ours/35349.2min_seg011.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg011.wav" style="width: 100%;"></audio>
+      <img id="spec_sd_000_low" src="demos/demo_from_songdes_8k/low/35349.2min_seg000_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/ours/35349.2min_seg000.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_000_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/low/7096.2min_seg017_8k.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/ours/7096.2min_seg017.wav_0.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_8k/audiosr/7096.2min_seg017.wav" style="width: 100%;"></audio>
+      <img id="spec_sd_000_ours" src="demos/demo_from_songdes_8k/ours/35349.2min_seg000.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg000.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_000_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_sd_000_audiosr" src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg000_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box"  border-radius: 12px; margin-top: 30px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/low/35349.2min_seg011_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_011_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_011_low" src="demos/demo_from_songdes_8k/low/35349.2min_seg011_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/ours/35349.2min_seg011.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_011_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_011_ours" src="demos/demo_from_songdes_8k/ours/35349.2min_seg011.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg011.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_011_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_011_audiosr" src="demos/demo_from_songdes_8k/audiosr/35349.2min_seg011_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box"  border-radius: 12px; margin-top: 30px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/low/7096.2min_seg017_8k.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_017_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_017_low" src="demos/demo_from_songdes_8k/low/7096.2min_seg017_8k_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/ours/7096.2min_seg017.wav_0.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_017_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_017_ours" src="demos/demo_from_songdes_8k/ours/7096.2min_seg017.wav_0_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_8k/audiosr/7096.2min_seg017.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_sd_017_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_sd_017_audiosr" src="demos/demo_from_songdes_8k/audiosr/7096.2min_seg017_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Song-Describer-Dataset, 16kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/low/1245192.2min_seg012.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/ours/1245192.2min_seg012.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/audiosr/1245192.2min_seg012.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box" background- border-radius: 12px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/low/1245192.2min_seg012.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1245192_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/low/14348.2min_seg017.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/ours/14348.2min_seg017.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/audiosr/14348.2min_seg017.wav" style="width: 100%;"></audio>
+      <img id="spec_1245192_low" src="demos/demo_from_songdes_16k/low/1245192.2min_seg012_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/ours/1245192.2min_seg012.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1245192_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/low/642167.2min_seg010.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/ours/642167.2min_seg010.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/demo_from_songdes_16k/audiosr/642167.2min_seg010.wav" style="width: 100%;"></audio>
+      <img id="spec_1245192_ours" src="demos/demo_from_songdes_16k/ours/1245192.2min_seg012_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/audiosr/1245192.2min_seg012.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1245192_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_1245192_audiosr" src="demos/demo_from_songdes_16k/audiosr/1245192.2min_seg012_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box"  border-radius: 12px; margin-top: 30px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/low/14348.2min_seg017.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_14348_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_14348_low" src="demos/demo_from_songdes_16k/low/14348.2min_seg017_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/ours/14348.2min_seg017.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_14348_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_14348_ours" src="demos/demo_from_songdes_16k/ours/14348.2min_seg017_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/audiosr/14348.2min_seg017.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_14348_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_14348_audiosr" src="demos/demo_from_songdes_16k/audiosr/14348.2min_seg017_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box"  border-radius: 12px; margin-top: 30px;">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/low/642167.2min_seg010.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_642167_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_642167_low" src="demos/demo_from_songdes_16k/low/642167.2min_seg010_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/ours/642167.2min_seg010.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_642167_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_642167_ours" src="demos/demo_from_songdes_16k/ours/642167.2min_seg010_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr>
+      <p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/demo_from_songdes_16k/audiosr/642167.2min_seg010.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_642167_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_642167_audiosr" src="demos/demo_from_songdes_16k/audiosr/642167.2min_seg010_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
 
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">VCTK, 8kHz input</h2>
 
     <!-- Audio 1 -->
-    <div class="box">
+    <div class="box audio-box">
       <h3 class="subtitle is-5">Audio 1</h3>
+
+      <!-- Each method -->
       <p><b>Ground Truth</b></p>
-      <audio controls src="./demos/vctk/1_gt.wav" style="width: 100%;"></audio>
-      <p><b>Input</b></p>
-      <audio controls src="./demos/vctk/1_input.wav" style="width: 100%;"></audio>
-      <p><b>Nu-Wave2</b></p>
-      <audio controls src="./demos/vctk/1_nuwave2.wav" style="width: 100%;"></audio>
-      <p><b>NVSR</b></p>
-      <audio controls src="./demos/vctk/1_nvsr.wav" style="width: 100%;"></audio>
-      <p><b>Frepainter</b></p>
-      <audio controls src="./demos/vctk/1_frepainter.wav" style="width: 100%;"></audio>
-      <p><b>Flowhigh</b></p>
-      <audio controls src="./demos/vctk/1_flowhigh.wav" style="width: 100%;"></audio>
-      <p><b>AudioSR</b></p>
-      <audio controls src="./demos/vctk/1_audiosr.wav" style="width: 100%;"></audio>
-      <p><b>Ours</b></p>
-      <audio controls src="./demos/vctk/1_ours.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_gt.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_gt')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_gt" src="./demos/vctk/1_gt_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Input</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_input.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_input')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_input" src="./demos/vctk/1_input_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Nu-Wave2</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_nuwave2.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_nuwave2')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_nuwave2" src="./demos/vctk/1_nuwave2_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>NVSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_nvsr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_nvsr')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_nvsr" src="./demos/vctk/1_nvsr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Frepainter</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_frepainter.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_frepainter')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_frepainter" src="./demos/vctk/1_frepainter_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Flowhigh</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_flowhigh.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_flowhigh')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_flowhigh" src="./demos/vctk/1_flowhigh_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_audiosr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_audiosr" src="./demos/vctk/1_audiosr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/1_ours.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_1_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_1_ours" src="./demos/vctk/1_ours_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+    <!-- Audio 2 -->
+    <div class="box audio-box">
+      <h3 class="subtitle is-5">Audio 2</h3>
+
+      <p><b>Ground Truth</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_gt.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_gt')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_gt" src="./demos/vctk/2_gt_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Input</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_input.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_input')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_input" src="./demos/vctk/2_input_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Nu-Wave2</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_nuwave2.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_nuwave2')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_nuwave2" src="./demos/vctk/2_nuwave2_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>NVSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_nvsr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_nvsr')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_nvsr" src="./demos/vctk/2_nvsr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Frepainter</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_frepainter.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_frepainter')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_frepainter" src="./demos/vctk/2_frepainter_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Flowhigh</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_flowhigh.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_flowhigh')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_flowhigh" src="./demos/vctk/2_flowhigh_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_audiosr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_audiosr" src="./demos/vctk/2_audiosr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/vctk/2_ours.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_2_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_2_ours" src="./demos/vctk/2_ours_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
 
-    <!-- Audio 2 -->
-    <div class="box">
-      <h3 class="subtitle is-5">Audio 2</h3>
-      <p><b>Ground Truth</b></p>
-      <audio controls src="./demos/vctk/2_gt.wav" style="width: 100%;"></audio>
-      <p><b>Input</b></p>
-      <audio controls src="./demos/vctk/2_input.wav" style="width: 100%;"></audio>
-      <p><b>Nu-Wave2</b></p>
-      <audio controls src="./demos/vctk/2_nuwave2.wav" style="width: 100%;"></audio>
-      <p><b>NVSR</b></p>
-      <audio controls src="./demos/vctk/2_nvsr.wav" style="width: 100%;"></audio>
-      <p><b>Frepainter</b></p>
-      <audio controls src="./demos/vctk/2_frepainter.wav" style="width: 100%;"></audio>
-      <p><b>Flowhigh</b></p>
-      <audio controls src="./demos/vctk/2_flowhigh.wav" style="width: 100%;"></audio>
-      <p><b>AudioSR</b></p>
-      <audio controls src="./demos/vctk/2_audiosr.wav" style="width: 100%;"></audio>
-      <p><b>Ours</b></p>
-      <audio controls src="./demos/vctk/2_ours.wav" style="width: 100%;"></audio>
-    </div>
+    <!-- Audio 2：同 Audio 1 格式，编号换成 2 即可，如需我也补写 Audio 2，请告知 -->
   </div>
 </section>
+
 
 
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">AudioLDM2 on AudioCaps, 16kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/low/48.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/ours/48.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/audiosr/48.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/low/48.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_1_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/low/20.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/ours/20.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/audiosr/20.wav" style="width: 100%;"></audio>
+      <img id="spec_acaps_1_low" src="demos/audiocaps_audioldm2/low/48_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/ours/48.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_1_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/low/47.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/ours/47.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/audiocaps_audioldm2/audiosr/47.wav" style="width: 100%;"></audio>
+      <img id="spec_acaps_1_ours" src="demos/audiocaps_audioldm2/ours/48_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/audiosr/48.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_1_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_acaps_1_audiosr" src="demos/audiocaps_audioldm2/audiosr/48_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/low/20.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_2_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_2_low" src="demos/audiocaps_audioldm2/low/20_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/ours/20.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_2_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_2_ours" src="demos/audiocaps_audioldm2/ours/20_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/audiosr/20.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_2_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_2_audiosr" src="demos/audiocaps_audioldm2/audiosr/20_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/low/47.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_3_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_3_low" src="demos/audiocaps_audioldm2/low/47_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/ours/47.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_3_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_3_ours" src="demos/audiocaps_audioldm2/ours/47_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/audiocaps_audioldm2/audiosr/47.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_acaps_3_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_acaps_3_audiosr" src="demos/audiocaps_audioldm2/audiosr/47_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">QA-MDT on MusicCaps, 16kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/musiccaps_qamdt/low/-hSMzrWZCAE.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/musiccaps_qamdt/ours/-hSMzrWZCAE.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/musiccaps_qamdt/audiosr/-hSMzrWZCAE.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/low/-hSMzrWZCAE.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_1_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/musiccaps_qamdt/low/-m9pH0WXQto.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/musiccaps_qamdt/ours/-m9pH0WXQto.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/musiccaps_qamdt/audiosr/-m9pH0WXQto.wav" style="width: 100%;"></audio>
+      <img id="spec_qamdt_1_low" src="demos/musiccaps_qamdt/low/-hSMzrWZCAE_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/ours/-hSMzrWZCAE.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_1_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/musiccaps_qamdt/low/00xURU_-ffC4.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/musiccaps_qamdt/ours/00xURU_-ffC4.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/musiccaps_qamdt/audiosr/00xURU_-ffC4.wav" style="width: 100%;"></audio>
+      <img id="spec_qamdt_1_ours" src="demos/musiccaps_qamdt/ours/-hSMzrWZCAE_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/audiosr/-hSMzrWZCAE.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_1_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_qamdt_1_audiosr" src="demos/musiccaps_qamdt/audiosr/-hSMzrWZCAE_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/low/-m9pH0WXQto.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_2_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_2_low" src="demos/musiccaps_qamdt/low/-m9pH0WXQto_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/ours/-m9pH0WXQto.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_2_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_2_ours" src="demos/musiccaps_qamdt/ours/-m9pH0WXQto_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/audiosr/-m9pH0WXQto.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_2_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_2_audiosr" src="demos/musiccaps_qamdt/audiosr/-m9pH0WXQto_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/low/00xURU_-ffC4.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_3_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_3_low" src="demos/musiccaps_qamdt/low/00xURU_-ffC4_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/ours/00xURU_-ffC4.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_3_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_3_ours" src="demos/musiccaps_qamdt/ours/00xURU_-ffC4_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/musiccaps_qamdt/audiosr/00xURU_-ffC4.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_qamdt_3_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_qamdt_3_audiosr" src="demos/musiccaps_qamdt/audiosr/00xURU_-ffC4_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">MaskGCT on LibriSpeech, 24kHz input</h2>
-    <div class="columns is-multiline">
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/librispeech_maskgct/low/spk_10_wav_3.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/librispeech_maskgct/ours/spk_10_wav_3.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/librispeech_maskgct/audiosr/spk_10_wav_3.wav" style="width: 100%;"></audio>
+
+    <!-- Sample 1 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/low/spk_10_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_1_low')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/librispeech_maskgct/low/spk_11_wav_1.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/librispeech_maskgct/ours/spk_11_wav_1.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/librispeech_maskgct/audiosr/spk_11_wav_1.wav" style="width: 100%;"></audio>
+      <img id="spec_mask_1_low" src="demos/librispeech_maskgct/low/spk_10_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/ours/spk_10_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_1_ours')">See Spectrogram</button>
       </div>
-      <div class="column is-full">
-        <p><b>Low</b></p>
-        <audio controls src="demos/librispeech_maskgct/low/spk_5_wav_3.wav" style="width: 100%;"></audio>
-        <p><b>Ours</b></p>
-        <audio controls src="demos/librispeech_maskgct/ours/spk_5_wav_3.wav" style="width: 100%;"></audio>
-        <p><b>AudioSR</b></p>
-        <audio controls src="demos/librispeech_maskgct/audiosr/spk_5_wav_3.wav" style="width: 100%;"></audio>
+      <img id="spec_mask_1_ours" src="demos/librispeech_maskgct/ours/spk_10_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/audiosr/spk_10_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_1_audiosr')">See Spectrogram</button>
       </div>
+      <img id="spec_mask_1_audiosr" src="demos/librispeech_maskgct/audiosr/spk_10_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 2 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/low/spk_11_wav_1.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_2_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_2_low" src="demos/librispeech_maskgct/low/spk_11_wav_1_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/ours/spk_11_wav_1.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_2_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_2_ours" src="demos/librispeech_maskgct/ours/spk_11_wav_1_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/audiosr/spk_11_wav_1.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_2_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_2_audiosr" src="demos/librispeech_maskgct/audiosr/spk_11_wav_1_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+    </div>
+
+    <!-- Sample 3 -->
+    <div class="box audio-box">
+      <p><b>Low</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/low/spk_5_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_3_low')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_3_low" src="demos/librispeech_maskgct/low/spk_5_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>Ours</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/ours/spk_5_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_3_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_3_ours" src="demos/librispeech_maskgct/ours/spk_5_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
+      <hr><p><b>AudioSR</b></p>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="demos/librispeech_maskgct/audiosr/spk_5_wav_3.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_mask_3_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_mask_3_audiosr" src="demos/librispeech_maskgct/audiosr/spk_5_wav_3_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
+
 
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Comparison with A2SB's Demo Page, 8kHz input</h2>
 
     <!-- ========== AUDIO 1 ========== -->
-    <div class="box">
+    <div class="box audio-box">
       <h3 class="subtitle is-5">Audio 1</h3>
+
       <p><b>Input</b></p>
-      <audio controls src="./demos/a2sb/1_input.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_input.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_input')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_input" src="./demos/a2sb/1_input_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>AudioSR</b></p>
-      <audio controls src="./demos/a2sb/1_audiosr.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_audiosr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_audiosr" src="./demos/a2sb/1_audiosr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>A2SB</b></p>
-      <audio controls src="./demos/a2sb/1_a2sb.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_a2sb.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_a2sb')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_a2sb" src="./demos/a2sb/1_a2sb_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>AUDIT</b></p>
-      <audio controls src="./demos/a2sb/1_audit.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_audit.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_audit')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_audit" src="./demos/a2sb/1_audit_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>CQTDiff</b></p>
-      <audio controls src="./demos/a2sb/1_cqtdiff.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_cqtdiff.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_cqtdiff')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_cqtdiff" src="./demos/a2sb/1_cqtdiff_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>Ours</b></p>
-      <audio controls src="./demos/a2sb/1_ours.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/1_ours.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_1_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_1_ours" src="./demos/a2sb/1_ours_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
 
     <!-- ========== AUDIO 2 ========== -->
-    <div class="box">
+    <div class="box audio-box">
       <h3 class="subtitle is-5">Audio 2</h3>
+
       <p><b>Input</b></p>
-      <audio controls src="./demos/a2sb/2_input.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_input.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_input')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_input" src="./demos/a2sb/2_input_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>AudioSR</b></p>
-      <audio controls src="./demos/a2sb/2_audiosr.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_audiosr.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_audiosr')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_audiosr" src="./demos/a2sb/2_audiosr_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>A2SB</b></p>
-      <audio controls src="./demos/a2sb/2_a2sb.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_a2sb.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_a2sb')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_a2sb" src="./demos/a2sb/2_a2sb_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>AUDIT</b></p>
-      <audio controls src="./demos/a2sb/2_audit.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_audit.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_audit')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_audit" src="./demos/a2sb/2_audit_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>CQTDiff</b></p>
-      <audio controls src="./demos/a2sb/2_cqtdiff.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_cqtdiff.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_cqtdiff')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_cqtdiff" src="./demos/a2sb/2_cqtdiff_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
+
       <p><b>Ours</b></p>
-      <audio controls src="./demos/a2sb/2_ours.wav" style="width: 100%;"></audio>
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <audio controls src="./demos/a2sb/2_ours.wav" style="width: 70%;"></audio>
+        <button class="button is-link is-light is-medium ml-3" onclick="toggleSpectrogram('spec_a2sb_2_ours')">See Spectrogram</button>
+      </div>
+      <img id="spec_a2sb_2_ours" src="./demos/a2sb/2_ours_spectrogram.png" style="display: none; width: 100%; margin-top: 10px;">
     </div>
   </div>
 </section>
 
 
+
 <footer class="footer">
   <div class="content has-text-centered">
-    <p>Demo page for AudioLBM.</p>
+    <p>Demo page for AudioLBM. Under Submission.</p>
   </div>
 </footer>
 
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+</script>
 
 </body>
 </html>
